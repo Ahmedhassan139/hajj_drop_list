@@ -18,7 +18,7 @@ with col0:
     
     st.markdown("<h4 style='text-align: right; color: black; margin-top:40px; font-family: 'Tajawal';'>منشورات وزاة الحج</h4>",
                 unsafe_allow_html=True)
-    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'mansobi','dakhel'))
+    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'منشورات منسوبي الحج' , 'حجاج الداخل','blank'))
 
 with col:
     st.image('haj_logo.png', caption='وزارة الحج')
@@ -60,7 +60,7 @@ if option == 'منشورات الحج' :
     url_manshorat_sent = sheet_url2.replace('/edit#gid=' , '/export?format=csv&gid=')
 
     df, df_sentiment = get_data(url_manshorat, url_manshorat_sent)
-if option == 'mansobi':
+if option == 'منشورات منسوبي الحج':
 
     sheet_url3 ="https://docs.google.com/spreadsheets/d/18AR5cY7o6yYY_JndDSSAeo524NXKzk3RYGAOnKw2M0U/edit#gid=716631534"
     url_manshorat_mansobi = sheet_url3.replace('/edit#gid=' , '/export?format=csv&gid=')
@@ -71,7 +71,7 @@ if option == 'mansobi':
 
 
 
-if option == 'dakhel':
+if option == 'حجاج الداخل':
 
     sheet_url5 ="https://docs.google.com/spreadsheets/d/1Q1CiTQleRVunDGLuwDW0pMhGBDZ0jxTZJUaPiyq3CG4/edit#gid=1595164542"
     url_manshorat_dakhel = sheet_url5.replace('/edit#gid=' , '/export?format=csv&gid=')
