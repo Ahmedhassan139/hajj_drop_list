@@ -1,0 +1,125 @@
+
+
+
+
+/* cards */
+div[class="css-1r6slb0 e1tzin5v2"] {
+    
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 8px 8px 8px 8px;
+    margin: 2px 2px 2px 2px;
+    box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+    display: flex;
+    align-items: stretch;
+
+    
+    
+
+  }
+/* cards rasd */
+div[class="css-12w0qpk e1tzin5v2"] {
+  background-color: whitesmoke; 
+  border-radius: 10px;
+  padding: 8px 8px 8px 8px;
+  margin: 2px 2px 2px 2px;
+  box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+  display: flex;
+  align-items: stretch;
+}
+  
+
+ button[class="css-1cpxqw2 edgvbvh9"] {
+  background-color: whitesmoke;
+  align-items: center;
+  box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+  
+
+  
+
+ }
+
+
+
+/* charts */
+  
+
+  div[    class="user-select-none svg-container"  ] {
+    /* background-color: whitesmoke; */
+
+    margin: 1px 1px 3px 3px;
+    white-space: normal;
+    border-radius: 10px;
+    align-content: center;
+    padding-right: 10px;
+    padding-left: 10px;
+    
+
+
+   
+   
+   
+   
+    box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+
+  } 
+
+   
+
+
+/* body */
+
+  div[ class="block-container css-18e3th9 egzxvld2" ] {
+    background-color: rgba(224, 236, 245, 0.814);
+    
+
+  }
+
+   /* logo haj */
+
+
+
+   div[    class="css-1kyxreq etr89bj2"] {
+    
+    display: block;
+
+    
+    max-width: 100px;
+    max-height: 100px;
+    margin: auto;
+    margin-bottom: 40px;
+    margin-left: 80px;
+    
+    align-content: center;
+
+
+
+  }
+
+
+  /* reports expander */
+
+  div [ class="css-1fcdlhc e1s6o5jp0"]{
+    background-color: whitesmoke;
+    margin: 2px 2px 2px 2px;
+    box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+    border-radius: 10px;
+  }
+
+
+  /* pages */
+
+  div [class="css-j7qwjs e1fqkh3o5"]{
+    background-color: white;
+    box-shadow: 5px 5px 10px 1px rgb(150, 148, 148);
+
+  }
+
+
+  /* fonts */
+
+  @font-face {
+    font-family: "Tajawal";
+    src: url("/Users/macbook/Desktop/final_hajj/Tajawal");
+  
+    }
