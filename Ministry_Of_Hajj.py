@@ -18,7 +18,7 @@ with col0:
     
     st.markdown("<h4 style='text-align: right; color: black; margin-top:40px; font-family: 'Tajawal';'>منشورات وزاة الحج</h4>",
                 unsafe_allow_html=True)
-    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'منشورات منسوبي الحج' , 'حجاج الداخل','blank'))
+    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'منشورات منسوبي الحج' , 'حجاج الداخل'))
 
 with col:
     st.image('haj_logo.png', caption='وزارة الحج')
