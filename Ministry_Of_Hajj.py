@@ -18,7 +18,7 @@ with col0:
     
     st.markdown("<h4 style='text-align: right; color: black; margin-top:40px; font-family: 'Tajawal';'>منشورات وزاة الحج</h4>",
                 unsafe_allow_html=True)
-    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'منشورات منسوبي الحج' , 'حجاج الداخل','منصة مقام'))
+    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'منشورات منسوبي الحج' , 'حجاج الداخل','منصة مقام','منصة اعتمرنا'))
 
 with col:
     st.image('haj_logo.png', caption='وزارة الحج')
@@ -82,12 +82,21 @@ if option == 'حجاج الداخل':
 
 if option == 'منصة مقام':
 
-    sheet_url6 ="https://docs.google.com/spreadsheets/d/1YUo1kcoaDjPI9FiyOYS9YriIZbnF9at8F0dhDRwtd3M/edit#gid=1379378486"
-    url_manshorat_maqam = sheet_url6.replace('/edit#gid=' , '/export?format=csv&gid=')
+    sheet_url7 ="https://docs.google.com/spreadsheets/d/1YUo1kcoaDjPI9FiyOYS9YriIZbnF9at8F0dhDRwtd3M/edit#gid=1379378486"
+    url_manshorat_maqam = sheet_url7.replace('/edit#gid=' , '/export?format=csv&gid=')
 
-    sheet_url7 ="https://docs.google.com/spreadsheets/d/1pxKv8U8uU3QK4wzGaSftevkR1Oyw2iDAHnlKeFoJVso/edit#gid=352640152"
-    url_manshorat_sent_maqam = sheet_url7.replace('/edit#gid=' , '/export?format=csv&gid=')
+    sheet_url8 ="https://docs.google.com/spreadsheets/d/1pxKv8U8uU3QK4wzGaSftevkR1Oyw2iDAHnlKeFoJVso/edit#gid=352640152"
+    url_manshorat_sent_maqam = sheet_url8.replace('/edit#gid=' , '/export?format=csv&gid=')
     df, df_sentiment = get_data(url_manshorat_maqam, url_manshorat_sent_maqam)
+    
+if option == 'منصة اعتمرنا':
+
+    sheet_url9 ="https://docs.google.com/spreadsheets/d/1Gb6c18G2b269N3ESiZlEiim1ReiYWD-RlO9-CnL5RpY/edit#gid=1704347518"
+    url_manshorat_etamarna = sheet_url9.replace('/edit#gid=' , '/export?format=csv&gid=')
+
+    sheet_url10 ="https://docs.google.com/spreadsheets/d/17isVWspuS3eGKbrbNxWErOmz1PBANiOi7g9mG0wZ7S4/edit#gid=1859331642"
+    url_manshorat_sent_etamarna = sheet_url10.replace('/edit#gid=' , '/export?format=csv&gid=')
+    df, df_sentiment = get_data(url_manshorat_etamarna, url_manshorat_sent_etamarna)
 
 
 key_words_newspapers = ['mhmd alshykh', 'المصري اليوم', 'صحيفة سبق الإلكترونية',  'اليوم السابع', 'جريدة الرياض',
