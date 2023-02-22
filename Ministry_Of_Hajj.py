@@ -18,7 +18,7 @@ with col0:
     
     st.markdown("<h4 style='text-align: right; color: black; margin-top:40px; font-family: 'Tajawal';'>منشورات وزاة الحج</h4>",
                 unsafe_allow_html=True)
-    option = st.selectbox('اختر الموضوع', (  'hajj_posts'  , 'mansobi','dakhel'))
+    option = st.selectbox('اختر الموضوع', (  'منشورات الحج'  , 'mansobi','dakhel'))
 
 with col:
     st.image('haj_logo.png', caption='وزارة الحج')
@@ -50,7 +50,7 @@ def get_data(url_manshorat, url_manshorat_sent):
     # time.sleep(4)
     return dataframe , dataframe2
 
-if option == 'hajj_posts' :
+if option == 'منشورات الحج' :
     sheet_url ="https://docs.google.com/spreadsheets/d/138cFQ8_Rlm9welSpaDwIWGgZmyKJrP2EZFgCAsrZVE0/edit#gid=1538011938"
     url_manshorat = sheet_url.replace('/edit#gid=' , '/export?format=csv&gid=')
 
