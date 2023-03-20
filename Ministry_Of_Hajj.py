@@ -589,9 +589,6 @@ def get_newspapers (df, key_words):
 
 df_news_papers = get_newspapers(df, key_words_newspapers)
 
-
-
-
 df_gov = get_newspapers(df, key_words_gov)
 
 df_channels = get_newspapers(df, key_words_channels)
@@ -647,7 +644,8 @@ with st.sidebar:
                 
             df_dated = df[(df["indexed"] <=  '{}'.format(dts[1])) & (df['indexed'] >=  '{}'.format(dts[0]))] 
             df_sentiment_dated = df_sentiment[(df_sentiment["Date"] <=  '{}'.format(dts[1])) & (df_sentiment['Date'] >=  '{}'.format(dts[0])) ] 
-            df_newspapers_dated = df_news_papers[(df_news_papers["indexed"] <=  '{}'.format(dts[1])) & (df_news_papers['indexed'] >=  '{}'.format(dts[0]))] 
+            df_newspapers_dated = df_news_papers[(df_news_papers["indexed"] <=  '{}'.format(dts[1])) & (df_news_papers['indexed'] >=  '{}'.format(dts[0]))]
+            
             df_gov_dated = df_gov[(df_gov["indexed"] <=  '{}'.format(dts[1])) & (df_gov['indexed'] >=  '{}'.format(dts[0]))] 
             df_channels_dated = df_channels[(df_channels["indexed"] <=  '{}'.format(dts[1])) & (df_channels['indexed'] >=  '{}'.format(dts[0]))] 
 
@@ -787,6 +785,8 @@ with bottom_container:
             
                     
             news_paper_results2 = df_newspapers_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
+            
+            
             news_paper_results2 = news_paper_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخير' , 'extra_source_attributes.name' : 'اسم الجريدة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
             news_paper_results2 = news_paper_results2.reset_index().drop(columns=['index'])
             news_paper_results3 = news_paper_results2.to_csv().encode('utf-8-sig')
