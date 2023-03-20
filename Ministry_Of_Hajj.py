@@ -559,6 +559,7 @@ key_words_channels = [ 'شبكة المجد'
 'روتانا خليجية','mbc', 'RT online', 'شمس FM', 'CNN Indonesia', 'قناة المملكة' , 'قناة الجزيرة' , 'إذاعة جدة' , 'ميديا وان تي في' , 'أخبار قناة السعودية' , 'رادیو بین المللی عربستان سعودی_ بخش فارسی' , 'اتحاد اذاعات وتليفزيونات دول منظمةالتعاون الإسلامي' , 'إذاعة ألف ألف', 'قناة اقرأ الفضائية', 'روتانا خليجية', 'العربية السعودية' , 'جدة الان | JeddahNow', 'قناة الرسالة', 'برنامج سيدتي' , '#برنامج_أخباركم']
 
 @st.cache(allow_output_mutation=True)
+
 def get_newspapers (df, key_words):
     # with st.spinner(' جاري تحضير التقرير! انتطر من فضلك...'):
 
@@ -587,11 +588,7 @@ def get_newspapers (df, key_words):
 
     return news_paper_results1
 
-df_news_papers = get_newspapers(df, key_words_newspapers)
 
-df_gov = get_newspapers(df, key_words_gov)
-
-df_channels = get_newspapers(df, key_words_channels)
 
 
 
@@ -633,7 +630,9 @@ with st.sidebar:
                 help="The start and end date time")
                 
                 st.write('Start: ', dts[0], "End: ", dts[1])
-            
+                df_dated = df[(df["indexed"] <=  '{}'.format(dts[1])) & (df['indexed'] >=  '{}'.format(dts[0]))] 
+                df_sentiment_dated = df_sentiment[(df_sentiment["Date"] <=  '{}'.format(dts[1])) & (df_sentiment['Date'] >=  '{}'.format(dts[0])) ] 
+                
             
 
                
@@ -642,12 +641,7 @@ with st.sidebar:
                 st.write("You must pick a start and end date")
                 st.stop()
                 
-            df_dated = df[(df["indexed"] <=  '{}'.format(dts[1])) & (df['indexed'] >=  '{}'.format(dts[0]))] 
-            df_sentiment_dated = df_sentiment[(df_sentiment["Date"] <=  '{}'.format(dts[1])) & (df_sentiment['Date'] >=  '{}'.format(dts[0])) ] 
-            df_newspapers_dated = df_news_papers[(df_news_papers["indexed"] <=  '{}'.format(dts[1])) & (df_news_papers['indexed'] >=  '{}'.format(dts[0]))]
             
-            df_gov_dated = df_gov[(df_gov["indexed"] <=  '{}'.format(dts[1])) & (df_gov['indexed'] >=  '{}'.format(dts[0]))] 
-            df_channels_dated = df_channels[(df_channels["indexed"] <=  '{}'.format(dts[1])) & (df_channels['indexed'] >=  '{}'.format(dts[0]))] 
 
           
             
@@ -738,94 +732,95 @@ with col5:
     except:
         st.write('حمل البينات أولا')
 
-            
-
-        
-    
-
-
-
-
-
-
-
-
 bottom_container = st.container()
 col6, col7, col8, col9  = st.columns(4)
 with bottom_container:
-    st.markdown("<h6 style='text-align: right; color: black;'>مواضيع الرصد</h6>", unsafe_allow_html=True)
 
-    with col6:
-        
-        st.markdown("<h6 style='text-align: center; color: black;'>حسابات تويتر أكثر من 50000 متابع</h6>", unsafe_allow_html=True)
-        try:
-            famous_df = pd.concat([df_dated, df_newspapers_dated, df_gov_dated, df_channels_dated, ]  ).drop_duplicates(keep=False, ignore_index=False)
-            social_media_df = df_dated[(df_dated.host_url == 'http://twitter.com/' ) ]
+    
+    reportsButton  = st.button('اضغط هنا لانشاء تقارير الرصد' )
+    if reportsButton:
+        df_news_papers = get_newspapers(df, key_words_newspapers)
+
+        df_gov = get_newspapers(df, key_words_gov)
+
+        df_channels = get_newspapers(df, key_words_channels)
+        df_newspapers_dated = df_news_papers[(df_news_papers["indexed"] <=  '{}'.format(dts[1])) & (df_news_papers['indexed'] >=  '{}'.format(dts[0]))]
+        df_gov_dated = df_gov[(df_gov["indexed"] <=  '{}'.format(dts[1])) & (df_gov['indexed'] >=  '{}'.format(dts[0]))] 
+        df_channels_dated = df_channels[(df_channels["indexed"] <=  '{}'.format(dts[1])) & (df_channels['indexed'] >=  '{}'.format(dts[0]))] 
+                
+        st.markdown("<h6 style='text-align: right; color: black;'>مواضيع الرصد</h6>", unsafe_allow_html=True)
+
+        with col6:
             
-            social_media_df = social_media_df [social_media_df.reach > 50000].sort_values(by= 'reach', ascending= False)
-            social_media_df_dated = social_media_df[(social_media_df["indexed"] <=  '{}'.format(dts[1])) & (social_media_df['indexed'] >=  '{}'.format(dts[0]))]
+            st.markdown("<h6 style='text-align: center; color: black;'>حسابات تويتر أكثر من 50000 متابع</h6>", unsafe_allow_html=True)
+            try:
+                famous_df = pd.concat([df_dated, df_newspapers_dated, df_gov_dated, df_channels_dated, ]  ).drop_duplicates(keep=False, ignore_index=False)
+                social_media_df = df_dated[(df_dated.host_url == 'http://twitter.com/' ) ]
+                
+                social_media_df = social_media_df [social_media_df.reach > 50000].sort_values(by= 'reach', ascending= False)
+                social_media_df_dated = social_media_df[(social_media_df["indexed"] <=  '{}'.format(dts[1])) & (social_media_df['indexed'] >=  '{}'.format(dts[0]))]
 
-            famous_df_final = social_media_df_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
-            famous_df_final = famous_df_final.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخير' , 'extra_source_attributes.name' : 'اسم الجريدة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
-            famous_df_final = famous_df_final.reset_index().drop(columns=['index'])
-            famous_df_final1 = famous_df_final.to_csv().encode('utf-8-sig')
-            st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(famous_df_final.index)),
-            unsafe_allow_html=True)
-            st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=famous_df_final1, file_name='المشاهير  {} - {}.csv'.format(dts[0], dts[1]),
-            mime='text/csv', )
-
-        except:
-            st.write('حمل البينات أولا')
-    with col7:
-            st.markdown("<h6 style='text-align: center; color: black;'>الصحف</h6>",
+                famous_df_final = social_media_df_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
+                famous_df_final = famous_df_final.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخير' , 'extra_source_attributes.name' : 'اسم الجريدة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
+                famous_df_final = famous_df_final.reset_index().drop(columns=['index'])
+                famous_df_final1 = famous_df_final.to_csv().encode('utf-8-sig')
+                st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(famous_df_final.index)),
                 unsafe_allow_html=True)
-            
+                st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=famous_df_final1, file_name='المشاهير  {} - {}.csv'.format(dts[0], dts[1]),
+                mime='text/csv', )
+
+            except:
+                st.write('حمل البينات أولا')
+        with col7:
+                st.markdown("<h6 style='text-align: center; color: black;'>الصحف</h6>",
+                    unsafe_allow_html=True)
+                
 
 
-            
-                    
-            news_paper_results2 = df_newspapers_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
-            
-            
-            news_paper_results2 = news_paper_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخير' , 'extra_source_attributes.name' : 'اسم الجريدة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
-            news_paper_results2 = news_paper_results2.reset_index().drop(columns=['index'])
-            news_paper_results3 = news_paper_results2.to_csv().encode('utf-8-sig')
-            st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(news_paper_results2.index)),
+                
+                        
+                news_paper_results2 = df_newspapers_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
+                
+                
+                news_paper_results2 = news_paper_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخير' , 'extra_source_attributes.name' : 'اسم الجريدة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
+                news_paper_results2 = news_paper_results2.reset_index().drop(columns=['index'])
+                news_paper_results3 = news_paper_results2.to_csv().encode('utf-8-sig')
+                st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(news_paper_results2.index)),
+                unsafe_allow_html=True)
+                st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=news_paper_results3, file_name='الصحف  {} - {}.csv'.format(dts[0], dts[1]),
+                mime='text/csv', )
+                
+
+                        
+
+                
+
+
+        with col8:
+            st.markdown("<h6 style='text-align: center; color: black;'>الجهات الحكومية</h6>", unsafe_allow_html=True)
+
+            gov_results2 = df_gov_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
+            gov_results2 = gov_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخبر' , 'extra_source_attributes.name' : 'اسم الحساب' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
+            gov_results2 = gov_results2.reset_index().drop(columns=['index'])
+            gov_results3 = gov_results2.to_csv().encode('utf-8-sig')
+            st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(gov_results2.index)),
             unsafe_allow_html=True)
-            st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=news_paper_results3, file_name='الصحف  {} - {}.csv'.format(dts[0], dts[1]),
+            st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=gov_results3, file_name='الجهات الحكومية  {} - {}.csv'.format(dts[0], dts[1]),
             mime='text/csv', )
+
+        with col9:
+
+            st.markdown("<h6 style='text-align: center; color: black;'> القنوات و الراديو</h6>", unsafe_allow_html=True)
+
+            channels_results2 = df_channels_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
+            channels_results2 = channels_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخبر' , 'extra_source_attributes.name' : 'اسم القناة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
+            channels_results2 = channels_results2.reset_index().drop(columns=['index'])
+            channels_results3 = channels_results2.to_csv().encode('utf-8-sig')
+            st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(channels_results2.index)),
+            unsafe_allow_html=True)
             
-
-                    
-
-            
-
-
-    with col8:
-        st.markdown("<h6 style='text-align: center; color: black;'>الجهات الحكومية</h6>", unsafe_allow_html=True)
-
-        gov_results2 = df_gov_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
-        gov_results2 = gov_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخبر' , 'extra_source_attributes.name' : 'اسم الحساب' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
-        gov_results2 = gov_results2.reset_index().drop(columns=['index'])
-        gov_results3 = gov_results2.to_csv().encode('utf-8-sig')
-        st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(gov_results2.index)),
-        unsafe_allow_html=True)
-        st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=gov_results3, file_name='الجهات الحكومية  {} - {}.csv'.format(dts[0], dts[1]),
-        mime='text/csv', )
-
-    with col9:
-
-        st.markdown("<h6 style='text-align: center; color: black;'> القنوات و الراديو</h6>", unsafe_allow_html=True)
-
-        channels_results2 = df_channels_dated[['url', 'indexed' , 'content_snippet', 'extra_source_attributes.name', 'extra_author_attributes.world_data.country' , 'reach' , 'engagement',]]
-        channels_results2 = channels_results2.rename({'url': 'الرابط' , 'indexed' : 'التاريخ', 'content_snippet' : 'الخبر' , 'extra_source_attributes.name' : 'اسم القناة' , 'extra_author_attributes.world_data.country' : 'البلد' , 'reach' : 'معدل الوصول' , 'engagement' :'التفاعل'}, axis= 'columns')
-        channels_results2 = channels_results2.reset_index().drop(columns=['index'])
-        channels_results3 = channels_results2.to_csv().encode('utf-8-sig')
-        st.markdown("<h3 style='text-align: center; color: black;'>{}</h3>".format(len(channels_results2.index)),
-        unsafe_allow_html=True)
-        
-        st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=channels_results3, file_name='القنوات   {} - {}.csv'.format(dts[0], dts[1]),
-        mime='text/csv', )
+            st.download_button(label= '  {}-{} اضغط لتحميل التقرير   '.format(dts[0], dts[1]), data=channels_results3, file_name='القنوات   {} - {}.csv'.format(dts[0], dts[1]),
+            mime='text/csv', )
 
         
 
